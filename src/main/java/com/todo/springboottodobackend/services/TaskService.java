@@ -34,19 +34,25 @@ public class TaskService {
         return taskRepository.findTasksByCompletedFalse();
     }
 
-    public void deleteTask(Task task) {
-        taskRepository.delete(task);
+    public void deleteTask(String id)
+    {
+        Optional<Task> taskOptional = taskRepository.findById(id);
+
+        if (taskOptional.isEmpty()) throw new RuntimeException("Task not found with id: " + id);
+
+        taskRepository.deleteById(id);
     }
 
     public Task updateTask(String id, Task taskDetails) {
-//        Optional<Task> taskOptional = taskRepository.findById(id);
-//        if (taskOptional.isPresent()) {
-//            Task existingTask = taskOptional.get();
-//            return taskRepository.save(taskDetails);
-//        }
+        Optional<Task> taskOptional = taskRepository.findById(id);
 
-    return taskDetails;
+        if (taskOptional.isEmpty()) throw new RuntimeException("Task not found with id: " + id);
+
+        Task existingTask = taskOptional.get();
+
+        existingTask.setTaskTitle(taskDetails.getTaskTitle());
+        existingTask.setCompleted(taskDetails.isCompleted());
+
+        return taskRepository.save(existingTask);
     }
-
-
 }

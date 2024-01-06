@@ -3,6 +3,7 @@ package com.todo.springboottodobackend.controllers;
 import com.todo.springboottodobackend.models.Task;
 import com.todo.springboottodobackend.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,16 +38,21 @@ public class TaskController {
     }
 
     // Update Routes
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Optional<Task>> updateTask(@PathVariable String id, @RequestBody Task task) {
-//        return ResponseEntity.ok(taskService.updateTask(id, task));
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<Task>> updateTask(@PathVariable String id, @RequestBody Task task) {
+        return ResponseEntity.ok(Optional.ofNullable(taskService.updateTask(id, task)));
+    }
 
     // Delete routes
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Task> deleteTaskById(@PathVariable String id) {
-//        return ResponseEntity.ok(taskService.deleteTask(id));
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTaskById(@PathVariable String id) {
+        try {
+            taskService.deleteTask(id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 
 
