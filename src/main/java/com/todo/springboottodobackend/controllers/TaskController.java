@@ -14,11 +14,14 @@ import java.util.Optional;
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     // Get Routes
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.ok(taskService.getAllTasks());
     }
@@ -26,13 +29,13 @@ public class TaskController {
     public ResponseEntity<List<Task>> getAllCompletedTasks() {
         return ResponseEntity.ok(taskService.getAllCompletedTasks());
     }
-    @GetMapping("/inComplete")
+    @GetMapping("/incomplete")
     public ResponseEntity<List<Task>> getAllInCompletedTasks() {
-    return ResponseEntity.ok(taskService.getAllInCompletedTasks());
+        return ResponseEntity.ok(taskService.getAllInCompletedTasks());
     }
 
     // Post Routes
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Task> addTask(@RequestBody Task task) {
         return ResponseEntity.ok(taskService.addNewTask(task));
     }

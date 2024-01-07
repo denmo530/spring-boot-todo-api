@@ -13,9 +13,7 @@ public interface TaskRepository extends MongoRepository<Task, String> {
 
     List<Task> findTasksByCompletedTrue();
 
-    default List<Task> findTasksByCompletedFalse() {
-        return null;
-    }
+    List<Task> findTasksByCompletedFalse();
 
     public long count();
 }
